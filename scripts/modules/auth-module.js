@@ -7,7 +7,7 @@ import {
     signInWithEmailAndPassword, 
     signOut, 
     onAuthStateChanged 
-} from "[https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js)";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { auth } from "./firebase-module.js"; // Mengimpor instance auth yang sudah diinisialisasi
 
 const authModule = (() => {
