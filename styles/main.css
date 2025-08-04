@@ -1,0 +1,82 @@
+/* NEW FEATURE: Theme variable definitions */
+:root, [data-theme="light"] {
+  --bg-primary: #f3f4f6; /* gray-100 */
+  --bg-secondary: #ffffff; /* white */
+  --text-primary: #1f2937; /* gray-800 */
+  --text-secondary: #6b7280; /* gray-500 */
+  --accent-primary: #3b82f6; /* blue-500 */
+  --accent-hover: #2563eb; /* blue-600 */
+  --border-color: #e5e7eb; /* gray-200 */
+}
+
+[data-theme="dark"] {
+  --bg-primary: #111827; /* gray-900 */
+  --bg-secondary: #1f2937; /* gray-800 */
+  --text-primary: #f9fafb; /* gray-50 */
+  --text-secondary: #9ca3af; /* gray-400 */
+  --accent-primary: #60a5fa; /* blue-400 */
+  --accent-hover: #3b82f6; /* blue-500 */
+  --border-color: #374151; /* gray-700 */
+}
+
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* PERBAIKAN: Menambahkan style dasar untuk modal agar tidak transparan */
+.fixed.inset-0 {
+    background-color: rgba(17, 24, 39, 0.5); /* gray-900 with 50% opacity */
+}
+
+/* PERBAIKAN: Mengganti kelas generik dengan variabel agar tema berfungsi di semua elemen */
+.bg-white { background-color: var(--bg-secondary) !important; }
+.text-gray-800 { color: var(--text-primary) !important; }
+.text-gray-600 { color: var(--text-secondary) !important; }
+.text-blue-600 { color: var(--accent-primary) !important; }
+.bg-blue-600 { background-color: var(--accent-primary) !important; }
+.hover\:bg-blue-700:hover { background-color: var(--accent-hover) !important; }
+.border { border-color: var(--border-color) !important; }
+.shadow { box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); }
+
+
+.kanban-column { 
+    min-height: 400px; 
+}
+
+.task-card { 
+    cursor: grab; 
+}
+
+.task-card:active { 
+    cursor: grabbing; 
+}
+
+.dragging { 
+    opacity: 0.5; 
+    background: #f0f0f0; 
+    transform: rotate(3deg);
+}
+
+.drag-over { 
+    border: 2px dashed var(--accent-primary); 
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Styling untuk Timeline yang Ditingkatkan */
+.priority-high { border-left-color: #ef4444 !important; } /* Merah */
+.priority-medium { border-left-color: #f59e0b !important; } /* Kuning */
+.priority-low { border-left-color: #22c55e !important; } /* Hijau */
+
+.deadline-critical { background-color: #fee2e2; color: #b91c1c; } /* Merah */
+.deadline-warning { background-color: #fef3c7; color: #92400e; } /* Kuning */
+.deadline-safe { background-color: #dcfce7; color: #166534; } /* Hijau */
+.deadline-done { background-color: #e5e7eb; color: #4b5563; } /* Abu-abu untuk status Selesai */
+
+
+#loading-overlay { 
+    z-index: 9999; 
+}

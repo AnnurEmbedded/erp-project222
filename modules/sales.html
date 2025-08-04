@@ -1,0 +1,295 @@
+    <div id="app-container">
+
+        <div id="loading-overlay" class="fixed inset-0 bg-white bg-opacity-75 z-50 flex items-center justify-center">
+            <div class="text-center">
+                <svg class="animate-spin h-8 w-8 text-[--deep-ocean] mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p id="loading-text" class="mt-2 text-gray-600">Memuat data...</p>
+            </div>
+        </div>
+
+        <nav class="bg-white shadow-md sticky top-0 z-40">
+            <div class="container mx-auto px-4 sm:px-8">
+                <div class="flex items-center justify-between h-auto md:h-16 py-2 flex-wrap">
+                    <!-- Left Side: Logo & Main Nav -->
+                    <div class="flex items-center space-x-6">
+                        <span class="font-bold text-xl text-[--deep-ocean]">DocuFlow</span>
+                        <div class="flex items-center space-x-2">
+                            <button id="nav-dashboard" class="nav-btn active">Penjualan</button>
+                            <button id="nav-procurement" class="nav-btn">Pengadaan</button>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Actions & User -->
+                    <div class="w-full md:w-auto flex items-center flex-wrap justify-center md:justify-end gap-x-4 gap-y-2 mt-2 md:mt-0">
+                         <!-- Management Buttons -->
+                        <div class="flex items-center flex-wrap gap-2">
+                            <button id="manage-company-btn" class="action-btn">Profil Perusahaan</button>
+                            <button id="manage-clients-btn" class="action-btn">Klien</button>
+                            <button id="manage-vendors-btn" class="action-btn">Vendor</button>
+                            <button id="manage-inventory-btn" class="action-btn">Manajemen Inventaris</button>
+                            <button id="new-project-btn" class="bg-[--limitless-sky] hover:bg-sky-600 text-white font-bold py-1 px-3 rounded-lg text-sm">+ Proyek Baru</button>
+                        </div>
+                        <!-- User Info -->
+                        <div id="user-info-bar" class="flex items-center gap-4 text-sm border-l-0 md:border-l pl-0 md:pl-4 ml-0 md:ml-2">
+                            <span id="user-email" class="text-gray-600"></span>
+                            <button id="logout-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-3 rounded-lg">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mx-auto p-4 md:p-8">
+            
+            <div id="dashboard-view" class="view active">
+                <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <h1 class="font-montserrat text-3xl font-bold text-[--deep-ocean]">Dashboard Analitik (Penjualan)</h1>
+                </div>
+
+                <!-- Analytics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm font-medium text-gray-500">Total Proyek</h3>
+                        <p id="stats-total-projects" class="text-3xl font-bold text-[--deep-ocean] mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm font-medium text-gray-500">Total Klien</h3>
+                        <p id="stats-total-clients" class="text-3xl font-bold text-[--deep-ocean] mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm font-medium text-gray-500">Estimasi Pendapatan</h3>
+                        <p id="stats-total-revenue" class="text-3xl font-bold text-[--deep-ocean] mt-1">Rp 0</p>
+                    </div>
+                </div>
+                
+                <!-- Sales Chart -->
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <h3 class="font-montserrat text-xl font-bold text-[--deep-ocean] mb-4">Penjualan per Bulan</h3>
+                    <div class="h-64">
+                        <canvas id="sales-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow-md mb-4 flex flex-wrap justify-between items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <button id="delete-selected-btn" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Hapus Terpilih</button>
+                    </div>
+                    <div class="relative">
+                        <input type="search" id="search-input" placeholder="Cari proyek atau klien..." class="pl-10 pr-4 py-2 border rounded-lg w-full sm:w-64">
+                        <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="p-4"><input type="checkbox" id="select-all-checkbox"></th>
+                                    <th scope="col" class="px-6 py-3">Nama Proyek</th>
+                                    <th scope="col" class="px-6 py-3">No. Penawaran</th>
+                                    <th scope="col" class="px-6 py-3">Klien</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3">Tanggal Dibuat</th>
+                                    <th scope="col" class="px-6 py-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projects-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="procurement-view" class="view">
+                 <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <h1 class="font-montserrat text-3xl font-bold text-[--deep-ocean]">Dashboard Analitik (Pengadaan)</h1>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="report-consumable-usage-btn" class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Lapor Penggunaan Consumable</button>
+                        <button id="delete-selected-procurement-btn" class="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Hapus Terpilih</button>
+                        <button id="new-pr-btn" class="bg-[--sunrise-gold] text-sm hover:bg-amber-400 text-black font-bold py-2 px-4 rounded-lg">+ Buat Permintaan Pembelian (PR)</button>
+                    </div>
+                </div>
+
+                <!-- Procurement Analytics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm font-medium text-gray-500">Total Purchase Order</h3>
+                        <p id="stats-total-po" class="text-3xl font-bold text-teal-600 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm font-medium text-gray-500">Total Pengeluaran</h3>
+                        <p id="stats-total-expense" class="text-3xl font-bold text-teal-600 mt-1">Rp 0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-sm font-medium text-gray-500">Vendor Teratas (by Value)</h3>
+                        <p id="stats-top-vendor" class="text-2xl font-bold text-teal-600 mt-1">-</p>
+                    </div>
+                </div>
+
+                <!-- Procurement Chart -->
+                <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+                    <h3 class="font-montserrat text-xl font-bold text-[--deep-ocean] mb-4">Pengadaan per Bulan</h3>
+                    <div class="h-64">
+                        <canvas id="procurement-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                    <h2 class="font-montserrat text-xl font-bold text-[--deep-ocean] mb-4">Daftar Permintaan Pembelian (PR)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="p-4"><input type="checkbox" id="select-all-pr-checkbox"></th>
+                                    <th scope="col" class="px-6 py-3">No. PR</th>
+                                    <th scope="col" class="px-6 py-3">Tanggal</th>
+                                    <th scope="col" class="px-6 py-3">Pemohon</th>
+                                    <th scope="col" class="px-6 py-3">Justifikasi</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pr-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="font-montserrat text-xl font-bold text-[--deep-ocean] mb-4">Daftar Pesanan Pembelian (PO)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="p-4"><input type="checkbox" id="select-all-po-checkbox"></th>
+                                    <th scope="col" class="px-6 py-3">No. PO</th>
+                                    <th scope="col" class="px-6 py-3">Tanggal</th>
+                                    <th scope="col" class="px-6 py-3">Vendor</th>
+                                    <th scope="col" class="px-6 py-3">Ref. PR</th>
+                                    <th scope="col" class="px-6 py-3">Status</th>
+                                    <th scope="col" class="px-6 py-3">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="po-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="editor-view" class="view">
+                <div class="flex justify-between items-center mb-4">
+                    <button id="back-to-dashboard-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">&larr; Kembali ke Dashboard</button>
+                    <button id="delete-project-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">Hapus Proyek Ini</button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="no-print bg-white p-6 rounded-lg shadow-md">
+                        <div id="doc-nav" class="grid grid-cols-4 md:grid-cols-7 gap-2 bg-gray-200 p-1 rounded-lg mb-6">
+                            <button data-doc="penawaran" class="doc-nav-btn p-2 rounded-md text-sm">Penawaran</button>
+                            <button data-doc="proforma" class="doc-nav-btn p-2 rounded-md text-sm">Proforma</button>
+                            <button data-doc="invoice" class="doc-nav-btn p-2 rounded-md text-sm">Invoice</button>
+                            <button data-doc="fakturpajak" class="doc-nav-btn p-2 rounded-md text-sm">Faktur Pajak</button>
+                            <button data-doc="suratjalan" class="doc-nav-btn p-2 rounded-md text-sm">Surat Jalan</button>
+                            <button data-doc="bast" class="doc-nav-btn p-2 rounded-md text-sm">BAST</button>
+                            <button data-doc="kwitansi" class="doc-nav-btn p-2 rounded-md text-sm">Kwitansi</button>
+                        </div>
+
+                        <form id="project-form" onsubmit="return false;">
+                            <div id="specific-details-form"></div>
+                            <h2 class="font-montserrat text-xl font-bold text-[--deep-ocean] border-b-2 border-[--limitless-sky] pb-2 mb-6 mt-6">Data Proyek Utama</h2>
+                            <fieldset class="mb-6 border p-4 rounded-md">
+                                <legend class="font-montserrat font-bold px-2 text-gray-700">Informasi Proyek & Klien</legend>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="md:col-span-2">
+                                        <label for="subject" class="text-xs font-medium text-gray-600">Nama Proyek</label>
+                                        <input type="text" id="subject" class="mt-1 block w-full rounded-md p-2">
+                                    </div>
+                                    <div>
+                                        <label for="clientId" class="block text-sm font-medium text-gray-700">Pilih Klien</label>
+                                        <select id="clientId" class="mt-1 block w-full rounded-md p-2"></select>
+                                    </div>
+                                    <div>
+                                        <label for="projectId" class="block text-sm font-medium text-gray-700">Nomor Dokumen</label>
+                                        <input type="text" id="projectId" class="mt-1 block w-full rounded-md p-2">
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset class="mb-6 border p-4 rounded-md">
+                                <legend class="font-montserrat font-bold px-2 text-gray-700">Item & Harga</legend>
+                                <div id="items-container"></div>
+                                <button id="add-item-btn" type="button" class="mt-2 bg-green-500 hover:bg-green-600 text-white text-sm font-bold py-2 px-4 rounded-lg">Tambah Item</button>
+                            </fieldset>
+                            <button id="save-project-btn" class="w-full bg-[--sunrise-gold] hover:bg-amber-400 text-[--deep-ocean] font-bold py-3 px-4 rounded-lg">Simpan Perubahan</button>
+                            <button id="generate-email-btn" class="w-full mt-2 bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-lg">Buat Email Penawaran</button>
+                        </form>
+                    </div>
+                    <div class="relative">
+                        <div class="no-print sticky top-4 bg-white p-3 rounded-lg shadow-md flex justify-between items-center z-10">
+                            <div class="flex items-center gap-4">
+                                <label for="preview-scale" class="text-sm font-medium">Skala:</label>
+                                <input type="range" id="preview-scale" min="0.3" max="1" step="0.05" value="0.5" class="w-32">
+                            </div>
+                            <button id="print-btn" class="bg-[--deep-ocean] hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg">Cetak ke PDF</button>
+                        </div>
+                        <div id="print-area-container" class="mt-4 bg-white rounded-lg shadow-lg overflow-hidden">
+                            <div id="print-area" class="p-8 md:p-12 bg-white text-gray-800">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="po-editor-view" class="view">
+                <div class="flex justify-between items-center mb-4">
+                    <button id="back-to-procurement-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">&larr; Kembali ke Dashboard Pengadaan</button>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 id="po-editor-title" class="font-montserrat text-2xl font-bold text-[--deep-ocean] mb-4">Buat Purchase Order (PO)</h2>
+                    <form id="po-form">
+                        <input type="hidden" id="poId">
+                        <input type="hidden" id="prRefId">
+                        <input type="hidden" id="poStatus">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="poVendorId" class="block text-sm font-medium text-gray-700">Pilih Vendor</label>
+                                <select id="poVendorId" class="mt-1 block w-full rounded-md p-2" required></select>
+                            </div>
+                            <div>
+                                <label for="poDate" class="block text-sm font-medium text-gray-700">Tanggal PO</label>
+                                <input type="date" id="poDate" class="mt-1 block w-full rounded-md p-2" required>
+                            </div>
+                        </div>
+
+                        <fieldset class="mb-6 border p-4 rounded-md">
+                            <legend class="font-montserrat font-bold px-2 text-gray-700">Item yang Dipesan</legend>
+                            <p class="text-sm text-gray-600 mb-4">Item diambil dari PR. Tambahkan harga per item.</p>
+                            <div id="po-items-container"></div>
+                        </fieldset>
+
+                        <div class="flex justify-end">
+                            <button id="save-po-btn" type="submit" class="bg-[--sunrise-gold] hover:bg-amber-400 text-[--deep-ocean] font-bold py-3 px-4 rounded-lg">Simpan & Buat PO</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="company-profile-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-20"></div>
+    <div id="clients-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-20"></div>
+    <div id="vendors-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-20"></div>
+    <div id="pr-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-20"></div>
+    <div id="inventory-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-20"></div>
+    <div id="consumable-usage-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-30"></div>
+    <div id="vendor-invoice-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-30"></div>
+    <div id="email-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-30"></div>
+    <div id="payment-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-30"></div>
+
+    <!-- DIHAPUS: Skrip-skrip ini tidak lagi diperlukan di sini karena sudah dimuat secara dinamis oleh sales-module.js -->
+    <!-- Chart.js -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script> -->
+    <!-- Main Application Script -->
+    <!-- <script type="module" src="./js/main.js"></script> -->

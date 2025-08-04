@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Terpadu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PERBAIKAN: Memastikan path ke Font Awesome dan main.css sudah benar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- PERBAIKAN: Menambahkan kembali script Tailwind CSS yang penting untuk tata letak -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-var(--bg-primary) text-var(--text-primary)">
+
+    <!-- Kontainer utama aplikasi, awalnya kosong -->
+    <div id="app-container">
+        <!-- Layar loading awal -->
+        <div id="loading-overlay" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+            <div class="flex flex-col items-center">
+                <i class="fas fa-spinner fa-spin text-blue-600 text-4xl"></i>
+                <p class="mt-4 text-lg font-semibold text-gray-700">Memverifikasi sesi...</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Memuat file app.js yang sudah direfaktor -->
+    <script type="module" src="scripts/app.js"></script>
+</body>
+</html>

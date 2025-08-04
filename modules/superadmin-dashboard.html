@@ -1,0 +1,40 @@
+<!-- Konten untuk Halaman Dashboard Super Admin -->
+<div id="page-superadmin-dashboard" class="page">
+    <h2 class="text-3xl font-bold mb-6">Super Admin: Tinjauan Perusahaan</h2>
+    
+    <!-- Kartu Statistik Utama -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-500">Total Proyek</h3>
+            <p id="sa-total-projects" class="text-4xl font-bold mt-2">0</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-500">Total Tugas</h3>
+            <p id="sa-total-tasks" class="text-4xl font-bold mt-2">0</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-500">Tugas Selesai</h3>
+            <p id="sa-completed-tasks" class="text-4xl font-bold mt-2">0</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-semibold text-gray-500">Total Pengguna</h3>
+            <p id="sa-total-users" class="text-4xl font-bold mt-2">0</p>
+        </div>
+    </div>
+
+    <!-- Grafik Visual -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-xl font-bold mb-4">Distribusi Tugas per Divisi</h3>
+            <div class="h-80">
+                <canvas id="tasks-by-division-chart"></canvas>
+            </div>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-xl font-bold mb-4">Status Tugas Keseluruhan</h3>
+             <div class="h-80">
+                <canvas id="tasks-by-status-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
