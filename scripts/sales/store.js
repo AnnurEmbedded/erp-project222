@@ -4,7 +4,7 @@
  * - FIX: Menggunakan path koleksi yang benar (`artifacts/{appId}/public/data/...`)
  * untuk semua operasi Firestore agar konsisten dengan app.js.
  */
-import { db } from './firebase-init.js';
+import { db } from './modules/firebase-module.js';
 import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, runTransaction, writeBatch, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
 // Helper untuk mendapatkan appId dari window
